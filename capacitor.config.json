@@ -1,6 +1,6 @@
 {
-  "appId": "com.xweb.app",
-  "appName": "xweb",
+  "appId": "com.xdjob.app",
+  "appName": "xdjob",
   "webDir": "dist",
   "bundledWebRuntime": false,
   "server": {

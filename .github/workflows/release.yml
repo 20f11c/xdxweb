@@ -1,0 +1,205 @@
+name: Release
+
+# 触发条件：创建tag时自动发布
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # 匹配 v1.0.0 格式的tag
+  workflow_dispatch:  # 允许手动触发
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+# 环境变量
+env:
+  NODE_VERSION: '20'
+  JAVA_VERSION: '17'
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: ${{ env.JAVA_VERSION }}
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build web app
+      run: npm run build
+      
+    - name: Sync Capacitor
+      run: npx cap sync android
+      
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    # 构建Debug APK（总是可用）
+    - name: Build Debug APK
+      working-directory: ./android
+      run: |
+        chmod +x ./gradlew
+        ./gradlew assembleDebug
+        
+    # 构建Release APK（如果有签名密钥）
+    - name: Build Release APK
+      working-directory: ./android
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: |
+        if [ ! -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+          echo "🔐 使用签名密钥构建Release APK"
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/keystore.jks
+          
+          # 创建签名配置
+          cat > app/release-signing.gradle << EOF
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file('keystore.jks')
+                      storePassword System.getenv('KEYSTORE_PASSWORD')
+                      keyAlias System.getenv('KEY_ALIAS')
+                      keyPassword System.getenv('KEY_PASSWORD')
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
+          
+          # 应用签名配置
+          echo "apply from: 'release-signing.gradle'" >> app/build.gradle
+          
+          ./gradlew assembleRelease
+        else
+          echo "⚠️ 未找到签名密钥，跳过Release APK构建"
+        fi
+        
+    # 获取版本信息
+    - name: Get version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION="${{ github.event.inputs.version }}"
+        else
+          VERSION=${GITHUB_REF#refs/tags/}
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "📦 发布版本: $VERSION"
+        
+    # 准备发布文件
+    - name: Prepare release files
+      run: |
+        mkdir -p release-files
+        
+        # 复制Debug APK
+        if [ -f "android/app/build/outputs/apk/debug/app-debug.apk" ]; then
+          cp android/app/build/outputs/apk/debug/app-debug.apk release-files/xweb-${{ steps.version.outputs.version }}-debug.apk
+          echo "✅ Debug APK已准备"
+        fi
+        
+        # 复制Release APK（如果存在）
+        if [ -f "android/app/build/outputs/apk/release/app-release.apk" ]; then
+          cp android/app/build/outputs/apk/release/app-release.apk release-files/xweb-${{ steps.version.outputs.version }}-release.apk
+          echo "✅ Release APK已准备"
+        fi
+        
+        # 创建构建信息文件
+        cat > release-files/BUILD_INFO.txt << EOF
+        构建信息
+        ========
+        版本: ${{ steps.version.outputs.version }}
+        构建时间: $(date)
+        提交SHA: ${{ github.sha }}
+        Node.js版本: ${{ env.NODE_VERSION }}
+        Java版本: ${{ env.JAVA_VERSION }}
+        
+        文件说明:
+        - xweb-${{ steps.version.outputs.version }}-debug.apk: 调试版本APK
+        - xweb-${{ steps.version.outputs.version }}-release.apk: 发布版本APK（如果可用）
+        
+        安装说明:
+        1. 下载对应的APK文件
+        2. 在Android设备上启用"未知来源"安装
+        3. 安装APK文件
+        EOF
+        
+        ls -la release-files/
+        
+    # 创建GitHub Release
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+        name: Release ${{ steps.version.outputs.version }}
+        body: |
+          ## 🚀 xweb ${{ steps.version.outputs.version }} 发布
+          
+          ### 📱 Android应用
+          
+          **下载说明:**
+          - `xweb-${{ steps.version.outputs.version }}-debug.apk`: 调试版本，适用于测试
+          - `xweb-${{ steps.version.outputs.version }}-release.apk`: 发布版本，适用于生产环境（如果可用）
+          
+          **安装步骤:**
+          1. 下载对应的APK文件
+          2. 在Android设备上启用"设置 > 安全 > 未知来源"
+          3. 点击APK文件进行安装
+          
+          ### 🔧 技术信息
+          - 构建时间: $(date)
+          - 提交SHA: ${{ github.sha }}
+          - Node.js: ${{ env.NODE_VERSION }}
+          - Java: ${{ env.JAVA_VERSION }}
+          
+          ### 📋 更新内容
+          请查看提交历史了解详细更新内容。
+          
+        files: release-files/*
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    # 构建摘要
+    - name: Build Summary
+      run: |
+        echo "## 🎉 发布完成" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📦 版本信息" >> $GITHUB_STEP_SUMMARY
+        echo "- 版本: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- 构建时间: $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "- 提交SHA: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📱 构建产物" >> $GITHUB_STEP_SUMMARY
+        if [ -f "release-files/xweb-${{ steps.version.outputs.version }}-debug.apk" ]; then
+          echo "✅ Debug APK" >> $GITHUB_STEP_SUMMARY
+        fi
+        if [ -f "release-files/xweb-${{ steps.version.outputs.version }}-release.apk" ]; then
+          echo "✅ Release APK (已签名)" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "⚠️ Release APK (未签名，需要配置密钥)" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🔗 [查看发布页面](https://github.com/${{ github.repository }}/releases/tag/${{ steps.version.outputs.version }})" >> $GITHUB_STEP_SUMMARY
