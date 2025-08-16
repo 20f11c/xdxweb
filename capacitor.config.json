@@ -1,5 +1,9 @@
 {
   "appId": "com.xweb.app",
   "appName": "xweb",
-  "webDir": "dist"
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
 }
