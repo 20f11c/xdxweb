@@ -1,0 +1,72 @@
+/* 应用全局样式 */
+.app {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* 移动端样式 */
+@media screen and (max-width: 768px) {
+  .app-content {
+    padding-bottom: 60px; /* 为底部导航留出空间 */
+  }
+}
+
+/* PC端样式 */
+@media screen and (min-width: 1025px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .app-content {
+    padding-bottom: 0;
+    order: 2;
+  }
+
+  /* PC端导航在顶部 */
+  .navigation-container {
+    order: 1;
+  }
+}
+
+/* 全局滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 响应式字体大小 */
+html {
+  font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  html {
+    font-size: 18px;
+  }
+}
