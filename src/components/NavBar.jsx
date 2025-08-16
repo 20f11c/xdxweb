@@ -31,12 +31,12 @@ const NavBar = ({
    */
   const renderRight = () => {
     if (!showAvatar) return null;
-    
+
     return (
       <div className="navbar-right">
         <div className="avatar-message-container">
-          <Avatar 
-            src={avatarSrc} 
+          <Avatar
+            src={avatarSrc}
             style={{ '--size': '32px' }}
             onClick={onAvatarClick}
           >

@@ -76,7 +76,7 @@
     height: 60px;
     padding: 0 24px;
   }
-  
+
   .common-navbar .adm-nav-bar-title {
     font-size: 20px;
   }
@@ -88,7 +88,7 @@
     height: 64px;
     padding: 0 32px;
   }
-  
+
   .common-navbar .adm-nav-bar-title {
     font-size: 22px;
   }
@@ -100,11 +100,11 @@
     height: 68px;
     padding: 0 40px;
   }
-  
+
   .common-navbar .adm-nav-bar-title {
     font-size: 24px;
   }
-  
+
   .navbar-right {
     gap: 16px;
   }

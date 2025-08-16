@@ -1,9 +1,0 @@
-{
-  "appId": "com.xdjob.app",
-  "appName": "xdjob",
-  "webDir": "dist",
-  "bundledWebRuntime": false,
-  "server": {
-    "androidScheme": "https"
-  }
-}

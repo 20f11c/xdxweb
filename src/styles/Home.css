@@ -172,12 +172,12 @@
 
 /* 平板样式 (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
-  
+
   .welcome-section {
     padding: 20px;
     margin: 0 -20px 20px -20px;
   }
-  
+
   .welcome-title {
     font-size: 20px;
   }
@@ -206,12 +206,12 @@
 
 /* PC端样式 (1025px - 1439px) */
 @media (min-width: 1025px) and (max-width: 1439px) {
-  
+
   .welcome-section {
     padding: 24px;
     margin: 0 -24px 24px -24px;
   }
-  
+
   .welcome-title {
     font-size: 22px;
   }
@@ -253,16 +253,16 @@
 
 /* 大屏设备样式 (≥1440px) */
 @media (min-width: 1440px) {
-  
+
   .welcome-section {
     padding: 32px;
     margin: 0 -32px 32px -32px;
   }
-  
+
   .welcome-title {
     font-size: 24px;
   }
-  
+
   .welcome-desc {
     font-size: 16px;
   }

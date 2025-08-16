@@ -11,11 +11,11 @@ import '../styles/Layout.css';
  * @param {boolean} props.showNavBar - 是否显示导航栏
  * @param {Object} props.navBarProps - 导航栏属性
  */
-const Layout = ({ 
-  children, 
-  className = '', 
-  showNavBar = true, 
-  navBarProps = {} 
+const Layout = ({
+  children,
+  className = '',
+  showNavBar = true,
+  navBarProps = {}
 }) => {
   return (
     <div className={`layout-container ${className}`}>
