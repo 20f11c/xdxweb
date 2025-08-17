@@ -28,7 +28,7 @@ export const useNotifications = (options = {}) => {
     totalCount: 0
   });
   const [stats, setStats] = useState(null);
-  
+
   // 使用ref来跟踪当前页码，避免ESLint依赖项问题
   const currentPageRef = useRef(1);
 
@@ -69,6 +69,11 @@ export const useNotifications = (options = {}) => {
             const newPagination = response.data.pagination || currentPagination;
             setPagination(newPagination);
             currentPageRef.current = newPagination.current;
+
+            // 如果是获取未读通知，使用分页数据中的totalCount作为未读数量
+            if (queryParams.unreadOnly && newPagination.totalCount !== undefined) {
+              setUnreadCount(newPagination.totalCount);
+            }
           }
           setLoading(false);
         }).catch(err => {
@@ -137,22 +142,22 @@ export const useNotifications = (options = {}) => {
       const response = await notificationApi.markAsRead(notificationId);
 
       if (response.success) {
-        // 更新本地状态
+        // 更新本地状态，使用API返回的实际数据
         setNotifications(prev =>
           prev.map(notification => {
-            if (notification._id === notificationId && !notification.read) {
+            if (notification._id === notificationId && !notification.isRead) {
               return {
                 ...notification,
-                read: true,
-                readAt: new Date().toISOString()
+                isRead: response.data.isRead,
+                readAt: response.data.readAt
               };
             }
             return notification;
           })
         );
 
-        // 更新未读数量
-        setUnreadCount(prev => Math.max(0, prev - 1));
+        // 重新获取准确的未读数量
+        loadNotifications({ unreadOnly: true, page: 1 });
 
         return response;
       }
@@ -160,7 +165,7 @@ export const useNotifications = (options = {}) => {
       console.error('标记已读失败:', err);
       throw err;
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, loadNotifications]);
 
   /**
    * 批量标记通知为已读
@@ -175,15 +180,13 @@ export const useNotifications = (options = {}) => {
       const response = await notificationApi.markMultipleAsRead(notificationIds);
 
       if (response.success) {
-        const markedCount = response.data.markedCount || 0;
-
         // 更新本地状态
         setNotifications(prev =>
           prev.map(notification => {
-            if (notificationIds.includes(notification._id) && !notification.read) {
+            if (notificationIds.includes(notification._id) && !notification.isRead) {
               return {
                 ...notification,
-                read: true,
+                isRead: true,
                 readAt: new Date().toISOString()
               };
             }
@@ -191,8 +194,8 @@ export const useNotifications = (options = {}) => {
           })
         );
 
-        // 更新未读数量
-        setUnreadCount(prev => Math.max(0, prev - markedCount));
+        // 重新获取准确的未读数量
+        loadNotifications({ unreadOnly: true, page: 1 });
 
         return response;
       }
@@ -200,13 +203,13 @@ export const useNotifications = (options = {}) => {
       console.error('批量标记已读失败:', err);
       throw err;
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, loadNotifications]);
 
   /**
    * 标记所有通知为已读
    */
   const markAllAsRead = useCallback(async () => {
-    const unreadNotifications = notifications.filter(n => !n.read && !n.isPermanent);
+    const unreadNotifications = notifications.filter(n => !n.isRead && !n.isPermanent);
     if (unreadNotifications.length === 0) {
       return;
     }
@@ -250,10 +253,12 @@ export const useNotifications = (options = {}) => {
     await loadNotifications({ unreadOnly: showUnreadOnly, page: 1 });
   }, [loadNotifications]);
 
-  // 初始化加载 - 只加载通知列表，避免不必要的请求
+  // 初始化加载 - 加载通知列表和未读数量
   useEffect(() => {
     if (autoLoad && isAuthenticated) {
       loadNotifications();
+      // 额外获取未读数量
+      loadNotifications({ unreadOnly: true, page: 1 });
     }
   }, [autoLoad, isAuthenticated, loadNotifications]);
 
@@ -263,7 +268,7 @@ export const useNotifications = (options = {}) => {
       loadNotifications();
     }
   }, [autoLoad, isAuthenticated, loadNotifications]);
-  
+
   // 同步pagination.current到ref
   useEffect(() => {
     currentPageRef.current = pagination.current;

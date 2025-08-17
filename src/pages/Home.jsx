@@ -14,7 +14,7 @@ import '../styles/Home.css';
 const Home = () => {
   const { user, logout } = useContext(AuthContext);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const { notifications: rawNotifications, loading, error, markAsRead, refresh: refreshNotifications } = useNotifications();
+  const { notifications: rawNotifications, unreadCount, loading, error, markAsRead, refresh: refreshNotifications } = useNotifications();
 
   // 过滤已读和已隐藏的通知
   const notifications = rawNotifications.filter(notification => {
@@ -197,8 +197,7 @@ const Home = () => {
     }
   ];
 
-  // 计算未读通知数量
-  const unreadCount = notifications.filter(notification => !notification.isRead).length;
+  // 使用hook提供的未读数量，而不是手动计算
 
   // 导航栏配置
   const navBarProps = {
