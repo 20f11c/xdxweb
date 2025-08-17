@@ -104,11 +104,7 @@ const Home = () => {
 
     localStorage.setItem('hiddenNotifications', JSON.stringify(hiddenNotifications));
 
-    const timeText = hours >= 24 ? `${Math.floor(hours / 24)}天` : `${hours}小时`;
-    Toast.show({
-      content: `通知已隐藏${timeText}`,
-      position: 'center'
-    });
+
 
     // 刷新通知列表以应用隐藏效果
     refreshNotifications();
@@ -116,21 +112,34 @@ const Home = () => {
 
   /**
    * 处理通知点击事件
+   * @param {string|Object} notificationIdOrObject - 通知ID或通知对象
    */
-  const handleNotificationClick = async (notificationId) => {
+  const handleNotificationClick = async (notificationIdOrObject) => {
+    // 兼容处理：如果传入的是对象，提取ID和类型信息
+    let notificationId, isPermanent, notificationType;
+    if (typeof notificationIdOrObject === 'object') {
+      notificationId = notificationIdOrObject._id || notificationIdOrObject.id;
+      isPermanent = notificationIdOrObject.isPermanent || notificationIdOrObject.type === 'permanent';
+      notificationType = notificationIdOrObject.type;
+    } else {
+      notificationId = notificationIdOrObject;
+      isPermanent = false;
+    }
+
     try {
       await markAsRead(notificationId);
-      Toast.show({
-        content: '通知已标记为已读',
-        position: 'center'
-      });
       // 刷新通知列表以移除已读通知
       refreshNotifications();
     } catch {
-      // 如果标记为已读失败，显示隐藏选项
-      // 使用简单的确认方式
-      if (window.confirm('无法标记为已读，是否要临时隐藏此通知？\n\n点击确定隐藏24小时，点击取消不处理')) {
+      // 如果标记为已读失败，处理隐藏选项
+      if (isPermanent || notificationType === 'permanent') {
+        // 长期通知直接隐藏，不需要确认
         hideNotificationLocally(notificationId, 24);
+      } else {
+        // 普通通知需要确认
+        if (window.confirm('无法标记为已读，是否要临时隐藏此通知？\n\n点击确定隐藏24小时，点击取消不处理')) {
+          hideNotificationLocally(notificationId, 24);
+        }
       }
     }
   };
@@ -280,7 +289,7 @@ const Home = () => {
                   tabIndex="0"
                   className="ant-notification-notice-close"
                   aria-label="Close"
-                  onClick={() => handleNotificationClick(notification._id || notification.id)}
+                  onClick={() => handleNotificationClick(notification)}
                 >
                   <span role="img" aria-label="close" className="anticon anticon-close ant-notification-notice-close-icon">
                     <svg fillRule="evenodd" viewBox="64 64 896 896" focusable="false" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true">

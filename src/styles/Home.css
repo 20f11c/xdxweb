@@ -495,9 +495,7 @@
   transition: all 0.3s;
 }
 
-.ant-notification-notice:hover {
-  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.12), 0 3px 6px -4px rgba(0, 0, 0, 0.16), 0 9px 28px 8px rgba(0, 0, 0, 0.08);
-}
+
 
 .ant-notification-notice.read {
   opacity: 0.75;
@@ -604,9 +602,8 @@
 @media (max-width: 768px) {
   .floating-notifications {
     top: 72px; /* 调整到移动端导航栏下方 */
-    left: 16px;
     right: 16px;
-    width: auto;
+    width: 320px; /* 保持固定宽度，避免拉宽整个屏幕 */
     max-height: calc(100vh - 88px); /* 相应调整最大高度 */
   }
 
