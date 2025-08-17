@@ -14,7 +14,7 @@
   flex: 1;
   width: 100%;
   max-width: 100%;
-  margin: 0 auto;
+  /* 移除 margin: 0 auto，避免大屏幕下居中产生空白 */
   padding: 16px;
   box-sizing: border-box;
 }
@@ -29,7 +29,7 @@
 /* 平板样式 (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
   .layout-content {
-    max-width: 750px;
+    /* 移除最大宽度限制，让内容占满整个屏幕 */
     padding: 20px;
   }
 }
@@ -37,7 +37,7 @@
 /* PC端样式 (1025px - 1439px) */
 @media (min-width: 1025px) and (max-width: 1439px) {
   .layout-content {
-    max-width: 1000px;
+    /* 移除最大宽度限制，让内容占满整个屏幕 */
     padding: 24px;
   }
 }
@@ -45,7 +45,7 @@
 /* 大屏设备样式 (≥1440px) */
 @media (min-width: 1440px) {
   .layout-content {
-    max-width: 1200px;
+    /* 移除最大宽度限制，让内容占满整个屏幕 */
     padding: 32px;
   }
 }

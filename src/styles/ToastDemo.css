@@ -1,0 +1,113 @@
+/* Toast演示页面样式 */
+.toast-demo-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-demo-content {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.toast-demo-content h1 {
+  color: #333333;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.toast-demo-content p {
+  color: #666666;
+  font-size: 14px;
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+
+.demo-info {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #f0f0f0;
+  text-align: left;
+}
+
+.demo-info h3 {
+  color: #333333;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.demo-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.demo-info li {
+  color: #666666;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.demo-info li:last-child {
+  margin-bottom: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .toast-demo-container {
+    padding: 16px;
+  }
+
+  .toast-demo-content {
+    padding: 24px;
+  }
+
+  .toast-demo-content h1 {
+    font-size: 20px;
+  }
+
+  .demo-info {
+    margin-top: 24px;
+    padding-top: 20px;
+  }
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .toast-demo-content {
+    background: #1f1f1f;
+    color: #ffffff;
+  }
+
+  .toast-demo-content h1 {
+    color: #ffffff;
+  }
+
+  .toast-demo-content p {
+    color: #cccccc;
+  }
+
+  .demo-info {
+    border-top-color: #333333;
+  }
+
+  .demo-info h3 {
+    color: #ffffff;
+  }
+
+  .demo-info li {
+    color: #cccccc;
+  }
+}

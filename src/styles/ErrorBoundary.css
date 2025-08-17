@@ -1,0 +1,158 @@
+/* 错误边界组件样式 */
+
+.error-boundary-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.error-boundary-card {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.error-boundary-content {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.error-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  margin-top: 0;
+}
+
+.error-message {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 30px;
+  margin-top: 0;
+}
+
+.error-details {
+  text-align: left;
+  margin: 20px 0;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.error-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 10px;
+}
+
+.error-details summary:hover {
+  color: #007bff;
+}
+
+.error-stack {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  color: #dc3545;
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.error-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.error-button {
+  min-width: 120px;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .error-boundary-container {
+    padding: 16px;
+  }
+
+  .error-boundary-content {
+    padding: 30px 16px;
+  }
+
+  .error-title {
+    font-size: 20px;
+  }
+
+  .error-message {
+    font-size: 14px;
+  }
+
+  .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* 暗色主题支持 */
+@media (prefers-color-scheme: dark) {
+  .error-boundary-container {
+    background-color: #1a1a1a;
+  }
+
+  .error-boundary-card {
+    background-color: #2d2d2d;
+    border: 1px solid #404040;
+  }
+
+  .error-title {
+    color: #fff;
+  }
+
+  .error-message {
+    color: #ccc;
+  }
+
+  .error-details {
+    background-color: #3a3a3a;
+    border-color: #555;
+  }
+
+  .error-details summary {
+    color: #ddd;
+  }
+
+  .error-details summary:hover {
+    color: #4dabf7;
+  }
+
+  .error-stack {
+    background-color: #2d2d2d;
+    border-color: #555;
+    color: #ff6b6b;
+  }
+}

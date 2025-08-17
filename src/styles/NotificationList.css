@@ -1,0 +1,466 @@
+/* 通知列表组件样式 */
+.notification-list {
+  position: relative;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* 头部样式 */
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.notification-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.unread-badge {
+  background: #ff4d4f;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.header-right {
+  display: flex;
+  gap: 8px;
+}
+
+.mark-all-btn,
+.refresh-btn {
+  padding: 6px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background: white;
+  color: #666;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mark-all-btn:hover,
+.refresh-btn:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.mark-all-btn:disabled,
+.refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 筛选器样式 */
+.notification-filters {
+  display: flex;
+  gap: 20px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.filter-group select {
+  padding: 4px 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin: 0;
+}
+
+/* 通知列表样式 */
+.notification-items {
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.notification-item {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+/* 未读通知样式 */
+.notification-item.unread {
+  background-color: #f6ffed;
+  border-left: 4px solid #52c41a;
+}
+
+.notification-item.unread:hover {
+  background-color: #f0f9e8;
+}
+
+/* 长期通知样式 */
+.notification-item.permanent {
+  background-color: #fff7e6;
+  border-left: 4px solid #fa8c16;
+}
+
+.notification-item.permanent:hover {
+  background-color: #fef2e6;
+}
+
+/* 优先级样式 */
+.notification-item.priority-urgent {
+  border-left-color: #ff4d4f;
+}
+
+.notification-item.priority-high {
+  border-left-color: #fa8c16;
+}
+
+.notification-item.priority-medium {
+  border-left-color: #1890ff;
+}
+
+.notification-item.priority-low {
+  border-left-color: #52c41a;
+}
+
+/* 通知内容样式 */
+.notification-content {
+  width: 100%;
+}
+
+.notification-header-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.notification-type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.type-icon {
+  font-size: 16px;
+}
+
+.type-label {
+  font-size: 12px;
+  color: #666;
+  background: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.permanent-badge {
+  font-size: 10px;
+  color: #fa8c16;
+  background: #fff7e6;
+  padding: 2px 4px;
+  border-radius: 2px;
+  border: 1px solid #ffd591;
+}
+
+.notification-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.priority-badge {
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+.priority-urgent {
+  background: #fff1f0;
+  color: #ff4d4f;
+  border: 1px solid #ffccc7;
+}
+
+.priority-high {
+  background: #fff7e6;
+  color: #fa8c16;
+  border: 1px solid #ffd591;
+}
+
+.priority-medium {
+  background: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.priority-low {
+  background: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.notification-time {
+  font-size: 12px;
+  color: #999;
+}
+
+.notification-title {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.unread-dot {
+  width: 6px;
+  height: 6px;
+  background: #ff4d4f;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.notification-text {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.read-info {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+}
+
+/* 分页样式 */
+.notification-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-top: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.page-btn {
+  padding: 6px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background: white;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 空状态样式 */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 14px;
+}
+
+/* 加载状态样式 */
+.notification-list.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.loading-spinner {
+  font-size: 14px;
+  color: #666;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+/* 错误状态样式 */
+.notification-list.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.error-message {
+  text-align: center;
+  color: #ff4d4f;
+  font-size: 14px;
+}
+
+.retry-btn {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border: 1px solid #ff4d4f;
+  border-radius: 4px;
+  background: white;
+  color: #ff4d4f;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.retry-btn:hover {
+  background: #ff4d4f;
+  color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .notification-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .header-left,
+  .header-right {
+    justify-content: center;
+  }
+
+  .notification-filters {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .notification-header-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .notification-meta {
+    align-self: flex-end;
+  }
+
+  .notification-pagination {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+/* 深色主题支持 */
+@media (prefers-color-scheme: dark) {
+  .notification-list {
+    background: #1f1f1f;
+    color: #fff;
+  }
+
+  .notification-header,
+  .notification-filters,
+  .notification-pagination {
+    background: #2a2a2a;
+    border-color: #404040;
+  }
+
+  .notification-item {
+    border-color: #404040;
+  }
+
+  .notification-item:hover {
+    background-color: #2a2a2a;
+  }
+
+  .notification-title {
+    color: #fff;
+  }
+
+  .notification-text {
+    color: #ccc;
+  }
+
+  .mark-all-btn,
+  .refresh-btn,
+  .page-btn {
+    background: #2a2a2a;
+    border-color: #404040;
+    color: #ccc;
+  }
+
+  .filter-group select {
+    background: #2a2a2a;
+    border-color: #404040;
+    color: #ccc;
+  }
+}

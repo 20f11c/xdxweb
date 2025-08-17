@@ -347,3 +347,311 @@
     color: #666;
   }
 }
+
+/* 头像下拉菜单样式 */
+.avatar-dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.avatar-dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  overflow: hidden;
+  animation: dropdownFadeIn 0.2s ease-out;
+}
+
+.dropdown-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdown-item:active {
+  background-color: #e9ecef;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 移动端下拉菜单适配 */
+@media (max-width: 768px) {
+  .avatar-dropdown-menu {
+    right: 12px;
+    top: 55px;
+    min-width: 180px;
+  }
+}
+
+/* PC端下拉菜单适配 */
+@media (min-width: 1024px) {
+  .avatar-dropdown-menu {
+    right: 20px;
+    top: 65px;
+    min-width: 220px;
+  }
+
+  .dropdown-item {
+    padding: 14px 18px;
+  }
+}
+
+/* 大屏设备适配 (1200px+) */
+@media (min-width: 1200px) {
+
+
+  .welcome-section {
+    margin: 0 0 24px 0;
+    border-radius: 16px;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .content-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card,
+  .content-card {
+    margin-bottom: 0;
+  }
+
+  .feature-card:hover,
+  .content-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .avatar-dropdown-menu {
+    right: 24px;
+    top: 70px;
+  }
+
+  .notifications-section {
+    margin-top: 24px;
+  }
+}
+
+/* Ant Design 通知样式 */
+.floating-notifications {
+  position: fixed;
+  top: 80px; /* 调整到导航栏下方，避免覆盖 */
+  right: 24px;
+  width: 384px;
+  max-height: calc(100vh - 104px); /* 相应调整最大高度 */
+  overflow-y: auto;
+  z-index: 1010;
+  pointer-events: none;
+}
+
+.notifications-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  pointer-events: auto;
+}
+
+/* Ant Design Notification Notice 样式 */
+.ant-notification-notice {
+  position: relative;
+  margin-bottom: 16px;
+  padding: 16px 24px;
+  border-radius: 6px;
+  background: #fff;
+  line-height: 1.5715;
+  word-wrap: break-word;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.ant-notification-notice:hover {
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.12), 0 3px 6px -4px rgba(0, 0, 0, 0.16), 0 9px 28px 8px rgba(0, 0, 0, 0.08);
+}
+
+.ant-notification-notice.read {
+  opacity: 0.75;
+}
+
+.ant-notification-notice-closable {
+  padding-right: 46px;
+}
+
+.ant-notification-notice-with-icon {
+  margin-left: 48px;
+  margin-top: 0;
+}
+
+.ant-notification-notice-icon {
+  position: absolute;
+  margin-left: -48px;
+  margin-top: 0;
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.ant-notification-notice-icon-info {
+  color: #1890ff;
+}
+
+.ant-notification-notice-icon-warning {
+  color: #faad14;
+}
+
+.ant-notification-notice-icon-error {
+  color: #ff4d4f;
+}
+
+.ant-notification-notice-message {
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.ant-notification-notice-description {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 1.5715;
+}
+
+.ant-notification-notice-description p {
+  margin: 0 0 8px 0;
+}
+
+.ant-notification-notice-description .notification-time {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-top: 8px;
+}
+
+.ant-notification-notice-close {
+  position: absolute;
+  top: 16px;
+  right: 22px;
+  color: rgba(0, 0, 0, 0.45);
+  outline: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 2px;
+  transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ant-notification-notice-close:hover {
+  color: rgba(0, 0, 0, 0.67);
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.ant-notification-notice-close-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+
+
+.loading-state,
+.error-state,
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.error-state {
+  color: #ff4d4f;
+}
+
+.empty-state {
+  color: #999;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .floating-notifications {
+    top: 72px; /* 调整到移动端导航栏下方 */
+    left: 16px;
+    right: 16px;
+    width: auto;
+    max-height: calc(100vh - 88px); /* 相应调整最大高度 */
+  }
+
+  .ant-notification-notice {
+    padding: 12px 16px;
+    margin-bottom: 12px;
+  }
+
+  .ant-notification-notice-closable {
+    padding-right: 38px;
+  }
+
+  .ant-notification-notice-with-icon {
+    margin-left: 40px;
+  }
+
+  .ant-notification-notice-icon {
+    margin-left: -40px;
+    font-size: 20px;
+    line-height: 20px;
+  }
+
+  .ant-notification-notice-message {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .ant-notification-notice-description {
+    font-size: 13px;
+  }
+
+  .ant-notification-notice-close {
+    top: 12px;
+    right: 16px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .ant-notification-notice-close-icon {
+    font-size: 12px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

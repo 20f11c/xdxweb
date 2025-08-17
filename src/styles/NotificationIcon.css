@@ -1,0 +1,355 @@
+/* 通知图标组件样式 */
+.notification-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* 通知图标样式 */
+.notification-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  color: #666;
+  background: transparent;
+}
+
+.notification-icon:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #1890ff;
+}
+
+.notification-icon.active {
+  background: rgba(24, 144, 255, 0.1);
+  color: #1890ff;
+}
+
+/* 图标尺寸 */
+.notification-icon.small {
+  width: 32px;
+  height: 32px;
+}
+
+.notification-icon.small .bell-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.notification-icon.medium {
+  width: 40px;
+  height: 40px;
+}
+
+.notification-icon.medium .bell-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.notification-icon.large {
+  width: 48px;
+  height: 48px;
+}
+
+.notification-icon.large .bell-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* 铃铛图标 */
+.bell-icon {
+  transition: transform 0.2s ease;
+}
+
+.notification-icon:hover .bell-icon {
+  transform: rotate(15deg);
+}
+
+/* 未读数量徽章 */
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #ff4d4f;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 5px;
+  border-radius: 8px;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* 小尺寸徽章调整 */
+.notification-icon.small .notification-badge {
+  font-size: 9px;
+  padding: 1px 4px;
+  min-width: 14px;
+  height: 14px;
+  top: -1px;
+  right: -1px;
+}
+
+/* 大尺寸徽章调整 */
+.notification-icon.large .notification-badge {
+  font-size: 11px;
+  padding: 3px 6px;
+  min-width: 18px;
+  height: 18px;
+  top: -3px;
+  right: -3px;
+}
+
+/* 加载指示器 */
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #1890ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 2;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* 下拉通知列表 */
+.notification-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 380px;
+  max-width: 90vw;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-top: 8px;
+  overflow: hidden;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 下拉菜单头部 */
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: 600;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #666;
+}
+
+/* 下拉菜单内容 */
+.dropdown-content {
+  max-height: 400px;
+  overflow: hidden;
+}
+
+/* 覆盖通知列表在下拉菜单中的样式 */
+.notification-dropdown .notification-list {
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.notification-dropdown .notification-header {
+  display: none;
+}
+
+.notification-dropdown .notification-filters {
+  display: none;
+}
+
+.notification-dropdown .notification-pagination {
+  display: none;
+}
+
+.notification-dropdown .notification-items {
+  max-height: 300px;
+}
+
+.notification-dropdown .notification-item {
+  padding: 12px 16px;
+}
+
+.notification-dropdown .notification-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .notification-dropdown {
+    width: 320px;
+    right: -20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notification-dropdown {
+    width: 280px;
+    right: -40px;
+  }
+
+  .notification-dropdown .notification-item {
+    padding: 10px 12px;
+  }
+
+  .notification-dropdown .notification-title {
+    font-size: 13px;
+  }
+
+  .notification-dropdown .notification-text {
+    font-size: 12px;
+  }
+}
+
+/* 深色主题支持 */
+@media (prefers-color-scheme: dark) {
+  .notification-icon {
+    color: #ccc;
+  }
+
+  .notification-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #1890ff;
+  }
+
+  .notification-icon.active {
+    background: rgba(24, 144, 255, 0.2);
+    color: #1890ff;
+  }
+
+  .notification-dropdown {
+    background: #1f1f1f;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .dropdown-header {
+    background: #2a2a2a;
+    border-color: #404040;
+    color: #fff;
+  }
+
+  .close-btn {
+    color: #ccc;
+  }
+
+  .close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+}
+
+/* 动画效果 */
+.notification-icon {
+  animation: none;
+}
+
+/* 有新通知时的动画 */
+.notification-icon.has-new-notification {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 徽章出现动画 */
+.notification-badge {
+  animation: badgeAppear 0.3s ease;
+}
+
+@keyframes badgeAppear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 无障碍支持 */
+.notification-icon:focus {
+  outline: 2px solid #1890ff;
+  outline-offset: 2px;
+}
+
+.notification-icon:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+  .notification-icon {
+    border: 1px solid currentColor;
+  }
+
+  .notification-badge {
+    border: 1px solid white;
+  }
+
+  .notification-dropdown {
+    border: 1px solid #333;
+  }
+}
