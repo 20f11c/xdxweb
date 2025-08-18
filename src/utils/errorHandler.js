@@ -112,7 +112,7 @@ export const handleApiError = (error, options = {}) => {
   if (errorType === ERROR_TYPES.AUTHENTICATION) {
     // 清除本地存储的认证信息
     localStorage.removeItem("token");
-    localStorage.removeItem("userData");
+    localStorage.removeItem("user");
 
     // 延迟跳转到登录页面，避免立即跳转
     setTimeout(() => {

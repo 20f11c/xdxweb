@@ -146,18 +146,7 @@ const Home = () => {
 
 
 
-  /**
-   * 获取通知类型标签
-   */
-  const getTypeLabel = (type) => {
-    const typeMap = {
-      system: '系统',
-      user: '用户',
-      order: '订单',
-      promotion: '推广'
-    };
-    return typeMap[type] || '其他';
-  };
+
 
 
 
@@ -244,44 +233,34 @@ const Home = () => {
         </div>
       )}
 
-      {/* 悬浮通知列表 */}
+      {/* 悬浮通知列表 - 堆叠效果 */}
       {!loading && !error && notifications.length > 0 && (
         <div className="floating-notifications">
-          <div className="notifications-container">
-            {notifications.map((notification, index) => (
-              <div
-                key={notification._id || notification.id || index}
-                className={`ant-notification-notice ant-notification-notice-${notification.priority === 'high' ? 'error' : notification.priority === 'medium' ? 'warning' : 'info'} ant-notification-notice-closable ${notification.read ? 'read' : 'unread'}`}
-              >
-                <div className="ant-notification-notice-content">
-                  <div className="ant-notification-notice-with-icon" role="alert">
-                    <span
-                      role="img"
-                      aria-label={notification.priority === 'high' ? 'close-circle' : notification.priority === 'medium' ? 'exclamation-circle' : 'info-circle'}
-                      className={`anticon anticon-${notification.priority === 'high' ? 'close-circle' : notification.priority === 'medium' ? 'exclamation-circle' : 'info-circle'} ant-notification-notice-icon ant-notification-notice-icon-${notification.priority === 'high' ? 'error' : notification.priority === 'medium' ? 'warning' : 'info'}`}
-                    >
-                      {notification.priority === 'high' && (
-                        <svg key={`high-icon-${notification._id || notification.id || index}`} viewBox="64 64 896 896" focusable="false" data-icon="close-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                          <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm165.4 618.2l-66-.3L512 563.4l-99.3 118.4-66.1.3c-4.4 0-8-3.5-8-8 0-1.9.7-3.7 1.9-5.2l130.1-155L340.5 359a8.32 8.32 0 01-1.9-5.2c0-4.4 3.6-8 8-8l66.1.3L512 464.6l99.3-118.4 66-.3c4.4 0 8 3.5 8 8 0 1.9-.7 3.7-1.9 5.2L553.5 514l130 155c1.2 1.5 1.9 3.3 1.9 5.2 0 4.4-3.6 8-8 8z"></path>
-                        </svg>
-                      )}
-                      {notification.priority === 'medium' && (
-                        <svg key={`medium-icon-${notification._id || notification.id || index}`} viewBox="64 64 896 896" focusable="false" data-icon="exclamation-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                          <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm-32 232c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V296zm32 440a48.01 48.01 0 010-96 48.01 48.01 0 010 96z"></path>
-                        </svg>
-                      )}
-                      {notification.priority === 'low' && (
-                        <svg key={`low-icon-${notification._id || notification.id || index}`} viewBox="64 64 896 896" focusable="false" data-icon="info-circle" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                          <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm32 664c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V456c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272zm-32-344a48.01 48.01 0 010-96 48.01 48.01 0 010 96z"></path>
-                        </svg>
-                      )}
-                    </span>
-                    <div className="ant-notification-notice-message">
-                      {getTypeLabel(notification.type)} {notification.title}
+          {notifications.map((notification, index) => (
+            <div
+              key={notification._id || notification.id || index}
+              className={`notification-item ${notification.read ? 'read' : 'unread'}`}
+              style={{
+                position: 'absolute',
+                top: `${80 + index * 8}px`,
+                right: '24px',
+                zIndex: 1010 - index,
+                transform: `translateY(${index * 4}px) scale(${1 - index * 0.02})`
+              }}
+            >
+                <div className="notification-content">
+                  <div className="notification-with-icon">
+                    {/* 喇叭图标 */}
+                    <span className="notification-horn-icon">📢</span>
+
+                    {/* 标题 */}
+                    <div className="notification-title">
+                      {notification.title}
                     </div>
-                    <div className="ant-notification-notice-description">
-                      <p key={`content-${notification._id || notification.id || index}`}>{notification.content}</p>
-                      <p key={`time-${notification._id || notification.id || index}`} className="notification-time">{new Date(notification.created_at).toLocaleString()}</p>
+
+                    {/* 内容 */}
+                    <div className="notification-description">
+                      {notification.content}
                     </div>
                   </div>
                 </div>
@@ -299,7 +278,6 @@ const Home = () => {
                 </a>
               </div>
             ))}
-          </div>
         </div>
       )}
     </Layout>

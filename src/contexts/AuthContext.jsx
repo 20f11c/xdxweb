@@ -28,14 +28,14 @@ export const AuthProvider = ({ children }) => {
           } else {
             // token无效，清除本地存储
             localStorage.removeItem('token');
-            localStorage.removeItem('userData');
+            localStorage.removeItem('user');
           }
         }
       } catch (error) {
         console.error('检查登录状态失败:', error);
         // 清除可能损坏的数据
         localStorage.removeItem('token');
-        localStorage.removeItem('userData');
+        localStorage.removeItem('user');
       } finally {
         setIsLoading(false);
       }
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
   const login = (userData, token) => {
     // 保存到本地存储
     localStorage.setItem('token', token);
-    localStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem('user', JSON.stringify(userData));
 
     setUser(userData);
   };
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       // 无论API调用是否成功，都清除本地数据
       localStorage.removeItem('token');
-      localStorage.removeItem('userData');
+      localStorage.removeItem('user');
       setUser(null);
     }
   };
