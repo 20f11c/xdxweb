@@ -3,6 +3,7 @@ import { Toast, Dropdown, Space, Badge, Button, Card } from 'antd-mobile';
 import { UserOutline, BellOutline, CheckOutline } from 'antd-mobile-icons';
 import AuthContext from '../contexts/auth';
 import Layout from '../components/Layout';
+import FloatMenu from '../components/FloatMenu';
 import { useNotifications } from '../hooks/useNotifications';
 import '../styles/Home.css';
 
@@ -274,7 +275,7 @@ const Home = () => {
               // 每个通知的缩放递减：1%
               const scale = Math.max(0.85, 1 - index * 0.01);
               // 确保最小缩放不小于0.85
-              
+
               return {
                 top: `${baseTop + index * verticalSpacing}px`,
                 right: '24px',
@@ -324,6 +325,9 @@ const Home = () => {
           })}
         </div>
       )}
+
+      {/* 悬浮菜单 */}
+      <FloatMenu />
     </Layout>
   );
 };
