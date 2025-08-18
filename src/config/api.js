@@ -4,7 +4,8 @@
  */
 
 // API基础配置
-export const API_BASE_URL = "http://localhost:3000/";
+// 使用相对路径，通过Vite代理转发到后端服务器
+export const API_BASE_URL = "/";
 export const REQUEST_TIMEOUT = 10000; // 请求超时时间（毫秒）
 
 /**

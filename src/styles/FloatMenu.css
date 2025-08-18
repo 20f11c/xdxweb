@@ -28,6 +28,7 @@
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   pointer-events: none;
   visibility: hidden;
+  width: 40px; /* 设置容器宽度与按钮宽度一致 */
 }
 
 .float-btn-group.open .float-btn-items-container {
@@ -205,29 +206,30 @@
   display: block;
 }
 
-/* 响应式设计 */
+/* 响应式设计 - 统一大小 */
 @media (max-width: 768px) {
   .float-btn-group {
     right: 16px;
     bottom: 16px;
   }
 
+  /* 保持与桌面端相同的大小 */
   .float-btn {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
   }
 
   .float-btn-trigger {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
   }
 
   .float-btn-icon {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .float-btn-trigger .float-btn-icon {
-    font-size: 16px;
+    font-size: 18px;
   }
 }
 
