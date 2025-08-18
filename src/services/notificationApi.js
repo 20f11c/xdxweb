@@ -1,4 +1,4 @@
-import { API_BASE_URL, REQUEST_TIMEOUT } from '../config/api';
+import { API_BASE_URL, REQUEST_TIMEOUT } from "../config/api";
 
 /**
  * 通知API服务层
@@ -14,14 +14,14 @@ class NotificationApi {
   async request(url, options = {}) {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options.headers,
       },
       ...options,
     };
 
     // 如果有token，添加到请求头
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -38,15 +38,15 @@ class NotificationApi {
       clearTimeout(timeoutId);
 
       let data;
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
         data = await response.json();
       } else {
         data = { message: await response.text() };
       }
 
       if (!response.ok) {
-        const error = new Error(data.message || '请求失败');
+        const error = new Error(data.message || "请求失败");
         error.response = {
           status: response.status,
           statusText: response.statusText,
@@ -57,8 +57,8 @@ class NotificationApi {
 
       return data;
     } catch (error) {
-      if (error.name === 'AbortError') {
-        throw new Error('请求超时，请检查网络连接');
+      if (error.name === "AbortError") {
+        throw new Error("请求超时，请检查网络连接");
       }
       throw error;
     }
@@ -76,11 +76,13 @@ class NotificationApi {
   async getNotifications(params = {}) {
     try {
       const queryString = new URLSearchParams(params).toString();
-      const url = `${API_BASE_URL}api/notifications${queryString ? '?' + queryString : ''}`;
+      const url = `${API_BASE_URL}api/notifications${
+        queryString ? "?" + queryString : ""
+      }`;
       const response = await this.request(url);
       return response;
     } catch (error) {
-      console.error('获取通知列表失败:', error);
+      console.error("获取通知列表失败:", error);
       throw this.handleError(error);
     }
   }
@@ -97,7 +99,9 @@ class NotificationApi {
   async getNotificationsByType(type, params = {}) {
     try {
       const queryString = new URLSearchParams(params).toString();
-      const url = `${API_BASE_URL}api/notifications/type/${type}${queryString ? '?' + queryString : ''}`;
+      const url = `${API_BASE_URL}api/notifications/type/${type}${
+        queryString ? "?" + queryString : ""
+      }`;
       const response = await this.request(url);
       return response;
     } catch (error) {
@@ -116,7 +120,7 @@ class NotificationApi {
       const response = await this.request(url);
       return response;
     } catch (error) {
-      console.error('获取未读通知数量失败:', error);
+      console.error("获取未读通知数量失败:", error);
       throw this.handleError(error);
     }
   }
@@ -131,7 +135,7 @@ class NotificationApi {
       const response = await this.request(url);
       return response;
     } catch (error) {
-      console.error('获取通知统计失败:', error);
+      console.error("获取通知统计失败:", error);
       throw this.handleError(error);
     }
   }
@@ -145,11 +149,11 @@ class NotificationApi {
     try {
       const url = `${API_BASE_URL}api/notifications/${notificationId}/read`;
       const response = await this.request(url, {
-        method: 'PUT'
+        method: "PUT",
       });
       return response;
     } catch (error) {
-      console.error('标记通知已读失败:', error);
+      console.error("标记通知已读失败:", error);
       throw this.handleError(error);
     }
   }
@@ -163,12 +167,12 @@ class NotificationApi {
     try {
       const url = `${API_BASE_URL}api/notifications/mark-read`;
       const response = await this.request(url, {
-        method: 'PUT',
-        body: JSON.stringify({ notificationIds })
+        method: "PUT",
+        body: JSON.stringify({ notificationIds }),
       });
       return response;
     } catch (error) {
-      console.error('批量标记通知已读失败:', error);
+      console.error("批量标记通知已读失败:", error);
       throw this.handleError(error);
     }
   }
@@ -180,13 +184,13 @@ class NotificationApi {
    */
   getTypeLabel(type) {
     const labels = {
-      maintenance: '维护通知',
-      update: '更新通知',
-      general: '一般通知',
-      renewal: '续费通知',
-      permanent: '长期通知'
+      maintenance: "维护通知",
+      update: "更新通知",
+      general: "一般通知",
+      renewal: "续费通知",
+      permanent: "长期通知",
     };
-    return labels[type] || '未知类型';
+    return labels[type] || "未知类型";
   }
 
   /**
@@ -196,12 +200,12 @@ class NotificationApi {
    */
   getPriorityLabel(priority) {
     const labels = {
-      low: '低',
-      medium: '中',
-      high: '高',
-      urgent: '紧急'
+      low: "低",
+      medium: "中",
+      high: "高",
+      urgent: "紧急",
     };
-    return labels[priority] || '未知';
+    return labels[priority] || "未知";
   }
 
   /**
@@ -210,13 +214,13 @@ class NotificationApi {
    * @returns {string} 格式化后的时间
    */
   formatTime(timeString) {
-    if (!timeString) return '';
-    return new Date(timeString).toLocaleString('zh-CN', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
+    if (!timeString) return "";
+    return new Date(timeString).toLocaleString("zh-CN", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   }
 
@@ -231,8 +235,12 @@ class NotificationApi {
     }
 
     const now = new Date();
-    const startTime = notification.startTime ? new Date(notification.startTime) : null;
-    const endTime = notification.endTime ? new Date(notification.endTime) : null;
+    const startTime = notification.startTime
+      ? new Date(notification.startTime)
+      : null;
+    const endTime = notification.endTime
+      ? new Date(notification.endTime)
+      : null;
 
     if (startTime && now < startTime) {
       return false; // 还未到开始时间
@@ -251,20 +259,20 @@ class NotificationApi {
    * @returns {string} CSS类名
    */
   getNotificationClass(notification) {
-    const classes = ['notification-item'];
+    const classes = ["notification-item"];
 
     if (!notification.isRead) {
-      classes.push('unread');
+      classes.push("unread");
     }
 
     if (notification.isPermanent) {
-      classes.push('permanent');
+      classes.push("permanent");
     }
 
     classes.push(`priority-${notification.priority}`);
     classes.push(`type-${notification.type}`);
 
-    return classes.join(' ');
+    return classes.join(" ");
   }
 
   /**
@@ -276,26 +284,26 @@ class NotificationApi {
     if (error.response) {
       // 服务器响应错误
       const { status, data } = error.response;
-      const message = data?.message || '请求失败';
+      const message = data?.message || "请求失败";
 
       switch (status) {
         case 400:
           return new Error(`参数错误: ${message}`);
         case 401:
-          return new Error('未授权，请重新登录');
+          return new Error("未授权，请重新登录");
         case 404:
-          return new Error('通知不存在或已过期');
+          return new Error("通知不存在或已过期");
         case 500:
-          return new Error('服务器内部错误，请稍后重试');
+          return new Error("服务器内部错误，请稍后重试");
         default:
           return new Error(message);
       }
     } else if (error.request) {
       // 网络错误
-      return new Error('网络连接失败，请检查网络设置');
+      return new Error("网络连接失败，请检查网络设置");
     } else {
       // 其他错误
-      return new Error(error.message || '未知错误');
+      return new Error(error.message || "未知错误");
     }
   }
 }
@@ -317,5 +325,5 @@ export const {
   getPriorityLabel,
   formatTime,
   isNotificationValid,
-  getNotificationClass
+  getNotificationClass,
 } = notificationApi;

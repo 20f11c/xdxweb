@@ -99,7 +99,7 @@
 
 .notification-item.unread {
   background-color: #f6ffed;
-  border-left: 4px solid #52c41a;
+
 }
 
 .notification-item.unread:hover {

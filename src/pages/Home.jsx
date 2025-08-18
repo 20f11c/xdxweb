@@ -233,51 +233,95 @@ const Home = () => {
         </div>
       )}
 
-      {/* 悬浮通知列表 - 堆叠效果 */}
+      {/* 悬浮通知列表 - 新设计 */}
       {!loading && !error && notifications.length > 0 && (
         <div className="floating-notifications">
-          {notifications.map((notification, index) => (
-            <div
-              key={notification._id || notification.id || index}
-              className={`notification-item ${notification.read ? 'read' : 'unread'}`}
-              style={{
-                position: 'absolute',
-                top: `${80 + index * 8}px`,
+          {notifications.map((notification, index) => {
+            /**
+             * 根据通知类型获取对应的图标和样式类名
+             * @param {string} type - 通知类型
+             * @returns {object} 包含图标和类名的对象
+             */
+            const getNotificationStyle = (type) => {
+              switch (type) {
+                case 'success':
+                  return { icon: '✓', className: 'notification-success' };
+                case 'error':
+                  return { icon: '✕', className: 'notification-error' };
+                case 'warning':
+                  return { icon: '⚠', className: 'notification-warning' };
+                case 'info':
+                default:
+                  return { icon: 'ℹ', className: 'notification-info' };
+              }
+            };
+
+            const { icon, className } = getNotificationStyle(notification.type);
+
+            /**
+             * 计算通知的堆叠样式
+             * 使用统一的堆叠算法，确保所有通知都能正确显示
+             * @param {number} index - 通知在数组中的索引
+             * @returns {object} 包含位置和变换样式的对象
+             */
+            const getStackingStyle = (index) => {
+              // 基础位置：从顶部80px开始
+              const baseTop = 80;
+              // 每个通知的垂直间距：6px
+              const verticalSpacing = 6;
+              // 每个通知的Y轴位移：3px
+              const translateY = index * 3;
+              // 每个通知的缩放递减：1%
+              const scale = Math.max(0.85, 1 - index * 0.01);
+              // 确保最小缩放不小于0.85
+              
+              return {
+                top: `${baseTop + index * verticalSpacing}px`,
                 right: '24px',
                 zIndex: 1010 - index,
-                transform: `translateY(${index * 4}px) scale(${1 - index * 0.02})`
-              }}
-            >
+                transform: `translateY(${translateY}px) scale(${scale})`
+              };
+            };
+
+            return (
+              <div
+                key={notification._id || notification.id || index}
+                className={`notification-item ${className} ${notification.read ? 'read' : 'unread'}`}
+                style={{
+                  position: 'absolute',
+                  ...getStackingStyle(index)
+                }}
+              >
                 <div className="notification-content">
                   <div className="notification-with-icon">
-                    {/* 喇叭图标 */}
-                    <span className="notification-horn-icon">📢</span>
-
-                    {/* 标题 */}
-                    <div className="notification-title">
-                      {notification.title}
+                    {/* 类型图标 */}
+                    <div className="notification-icon">
+                      <span className="notification-icon-symbol">{icon}</span>
                     </div>
 
-                    {/* 内容 */}
-                    <div className="notification-description">
-                      {notification.content}
+                    <div className="notification-text">
+                      {/* 标题 */}
+                      <div className="notification-title">
+                        {notification.title}
+                      </div>
+
+                      {/* 内容 */}
+                      <div className="notification-description">
+                        {notification.content}
+                      </div>
                     </div>
                   </div>
                 </div>
-                <a
-                  tabIndex="0"
-                  className="ant-notification-notice-close"
+                <button
+                  className="notification-close"
                   aria-label="Close"
                   onClick={() => handleNotificationClick(notification)}
                 >
-                  <span role="img" aria-label="close" className="anticon anticon-close ant-notification-notice-close-icon">
-                    <svg fillRule="evenodd" viewBox="64 64 896 896" focusable="false" data-icon="close" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                      <path d="M799.86 166.31c.02 0 .04.02.08.06l57.69 57.7c.04.03.05.05.06.08a.12.12 0 010 .06c0 .03-.02.05-.06.09L569.93 512l287.7 287.7c.04.04.05.06.06.09a.12.12 0 010 .07c0 .02-.02.04-.06.08l-57.7 57.69c-.03.04-.05.05-.07.06a.12.12 0 01-.07 0c-.03 0-.05-.02-.09-.06L512 569.93l-287.7 287.7c-.04.04-.06.05-.09.06a.12.12 0 01-.07 0c-.02 0-.04-.02-.08-.06l-57.69-57.7c-.04-.03-.05-.05-.06-.07a.12.12 0 010-.07c0-.03.02-.05.06-.09L454.07 512l-287.7-287.7c-.04-.04-.05-.06-.06-.09a.12.12 0 010-.07c0-.02.02-.04.06-.08l57.7-57.69c.03-.04.05-.05.07-.06a.12.12 0 01.07 0c.03 0 .05.02.09.06L512 454.07l287.7-287.7c.04-.04.06-.05.09-.06a.12.12 0 01.07 0z"></path>
-                    </svg>
-                  </span>
-                </a>
+                  <span className="notification-close-icon">×</span>
+                </button>
               </div>
-            ))}
+            );
+          })}
         </div>
       )}
     </Layout>
