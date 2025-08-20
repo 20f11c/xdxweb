@@ -105,26 +105,20 @@ export const registerUser = withErrorHandler(
  * @param {string} loginData.password - 密码
  * @returns {Promise<Object>} 登录结果
  */
-export const loginUser = withErrorHandler(
-  async (loginData) => {
-    const response = await request(API_ENDPOINTS.USER.LOGIN, {
-      method: "POST",
-      body: JSON.stringify(loginData),
-    });
+export const loginUser = withErrorHandler(async (loginData) => {
+  const response = await request(API_ENDPOINTS.USER.LOGIN, {
+    method: "POST",
+    body: JSON.stringify(loginData),
+  });
 
-    // 登录成功后保存token
-    if (response.success && response.data.token) {
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-    }
-
-    return response;
-  },
-  {
-    customMessage: "登录失败，请检查用户名和密码",
-    successMessage: "登录成功！",
+  // 登录成功后保存token
+  if (response.success && response.data.token) {
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
   }
-);
+
+  return response;
+});
 
 /**
  * 用户登出
