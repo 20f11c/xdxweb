@@ -89,10 +89,10 @@ const Register = () => {
       });
 
       if (response.success) {
-        // 延迟跳转到登录页面
+        // 延迟跳转到登录页面，成功消息由withErrorHandler统一处理
         setTimeout(() => {
           navigate('/login', { replace: true });
-        }, 1500);
+        }, 2000);
       }
     } catch (error) {
       // API错误由withErrorHandler统一处理，这里不需要额外的Toast

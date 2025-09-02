@@ -64,14 +64,13 @@ export const AuthProvider = ({ children }) => {
    */
   const logout = async () => {
     try {
-      // 调用API登出
+      // 调用登出函数（已处理清除本地存储）
       await logoutUser();
+      // 更新状态
+      setUser(null);
     } catch (error) {
-      console.error('登出API调用失败:', error);
-    } finally {
-      // 无论API调用是否成功，都清除本地数据
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      console.error('登出失败:', error);
+      // 即使出错也要清除状态
       setUser(null);
     }
   };

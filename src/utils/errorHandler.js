@@ -43,6 +43,10 @@ export const getErrorTypeByStatus = (status) => {
         return ERROR_TYPES.AUTHENTICATION;
       case 403:
         return ERROR_TYPES.AUTHORIZATION;
+      case 404:
+        return ERROR_TYPES.VALIDATION; // 用户名或邮箱不匹配
+      case 409:
+        return ERROR_TYPES.VALIDATION; // 冲突错误，如用户名已存在
       default:
         return ERROR_TYPES.VALIDATION;
     }
