@@ -13,6 +13,8 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ToastDemo from './pages/ToastDemo';
 import Notifications from './pages/Notifications';
+import AdminLogin from './pages/admin/Login';
+import AdminHome from './pages/admin/Home';
 
 // 样式
 import './App.css';
@@ -51,9 +53,11 @@ function App() {
                 {/* 忘记密码页面路由 */}
                 <Route path="/forgot-password" element={<ForgotPassword />} />
 
-                {/* Toast演示页面路由 */}
-                <Route path="/toast-demo" element={<ToastDemo />} />
-
+                {/* 管理员路由组 */}
+                <Route path="/admin/*">
+                    <Route index element={<AdminHome />} />
+                    <Route path="login" element={<AdminLogin />} />
+                </Route>
                 {/* 通知页面路由 */}
                 <Route
                   path="/notifications"
